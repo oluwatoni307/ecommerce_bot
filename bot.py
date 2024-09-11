@@ -22,6 +22,7 @@ from langchain_openai import ChatOpenAI
 llm = ChatOpenAI(model="gpt-4o", api_key=api_key)
 
 
+
 embeddings = OpenAIEmbeddings(model="text-embedding-3-small", api_key=api_key)
 
 vector_store = Chroma(
@@ -64,20 +65,19 @@ Your response MUST be a valid Python dictionary in the following format:
 2. Either 'query' (if search is true) or 'instruction' (if search is false)
 
 Example response format:
-{
+{{
     "search": true,
     "query": "optimized product search query here"
-}
+}}
 or
-{
+{{
     "search": false,
     "instruction": "guidance on how to answer based on past conversations or for non-product queries"
-}
-
+}}
 Remember: Only include information directly from the past conversations or product categories. If uncertain, instruct to express uncertainty or ask for clarification. Do not hallucinate or invent information.
 
-Past Conversations: {{past_conversations}}
-User Input: {{user_input}}
+Past Conversations: {context}
+User Input: {user_input}
 
 """
 
@@ -94,6 +94,7 @@ retrieve_prompt = PromptTemplate(
 parser = StrOutputParser()
 
 retreive_chain = retrieve_prompt | llm | parser
+
 
 
 def retreive(input):
@@ -143,7 +144,7 @@ Remember: Your responses must be based solely on the provided information. Do no
 
 Input:
 User Question: {user_question}
-Retrieved Data/Instruction: {retrieved_data_or_instruction}
+Retrieved Data/Instruction: {instruction}
 past conversation : {context}
 
 Begin your response now, focusing on addressing the user's question in a natural, conversational manner while incorporating any product images and adhering strictly to the provided information and guidelines."""
@@ -173,6 +174,6 @@ def bot(context, user_question):
     for chunk in chatbot_chain.stream(input_data):
         yield chunk
         
-# for answer_chunk in bot():
-#     print(answer_chunk, end='', flush=True)
+for answer_chunk in bot(context='hi',user_question='hello'):
+    print(answer_chunk, end='', flush=True)
 
