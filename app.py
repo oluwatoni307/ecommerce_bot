@@ -6,6 +6,13 @@ app = Flask(__name__)
 CORS(app)  # This allows CORS for all domains on all routes
 
 
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    return jsonify({'status': 'Server is running'})
+
+
+
 def extract_latest_question(conversations):
     # Get only the last 10 conversations (both user questions and bot answers)
     last_conversations = conversations[-10:]
