@@ -147,7 +147,7 @@ Retrieved Data/Instruction: {instruction}
 
 Begin your response now, focusing on addressing the user's question in a natural, conversational manner while incorporating any product images and using appropriate Markdown formatting."""
 converse_prompt = PromptTemplate(
-    template=converse_prompt_templete,
+    template=converse_prompt_template,
     input_variables=["context", "user_question", "instruction"],
 )
 converse_chain = converse_prompt | llm | parser
