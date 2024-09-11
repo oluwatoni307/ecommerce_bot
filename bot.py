@@ -174,6 +174,4 @@ def bot(context, user_question):
     for chunk in chatbot_chain.stream(input_data):
         yield chunk
         
-for answer_chunk in bot(context='hi',user_question='hello'):
-    print(answer_chunk, end='', flush=True)
 
